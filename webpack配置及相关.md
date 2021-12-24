@@ -10,6 +10,18 @@
 
   #####  webpack（具体解决方案）
 
+  > 节点：
+  >
+  > 1.mode：编译模式
+  >
+  > 2.enrty：指定入口文件
+  >
+  > 3.output：指定生成文件
+  >
+  > 4.plugins：插件
+  >
+  > 5.devServer：额外配置webpack-dev-server
+
    解决兼容性问题，性能优化
 
   ![image-20211221195652460](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20211221195652460.png)
@@ -62,7 +74,11 @@
 
     - webpack-dev-server(修改代码自动实时打包构建 `会将生成的js文件存放到内存而不是磁盘，不在dist中，引用<script src="/xxx.js"></script>`)
 
+      安装
+
       `npm install webpack-dev-server@3.11.2 -D  `
+
+      用这个插件之后不能用file协议打开，需要使用http协议
 
       - 配置
 
@@ -74,9 +90,57 @@
 
         
 
-      
+    - html-webpack-plugin
 
-      
+      > 1、将src中的index首页复制到根目录中（存在内存中），在根目录自动打开
+      >
+      > 2、对复制出来的页面自动注入打包的js脚本
+
+      安装
+
+      `npm install html-webpack-plugin@5.3.2 -D`
+
+      - 配置
+
+        ```js
+        //1.导入HTML插件
+        const HtmlPlugin = requrie('html-webpack-plugin')
+        
+        //2.创建HTML插件的实例对象
+        const htmlPlugin = new HtmlPlugin({
+            //指定复制的页面
+            template: './src/index.html',
+            //指定复制出来的文件名和存放路径
+            filename: './index.html'
+        })
+        
+        module.exports={
+        	mode:'development' ,
+            entry:path.join(__dirname/*当前文件所在目录*/,'./src/xxx.js'),
+            output:{
+            	path:path.join(__dirname,'dist')//生成路径
+            	filename:'xxx.js' //生成文件名
+        	},
+         //3.将实例对象放入plugins数组中
+            plugins: [htmlPlugin] 
+        }
+        ```
+
+  - devServer
+
+    ```
+    devServer:{
+    	open:true, //初次打包完成后，是否自动在浏览器打开
+    	host:'127.0.0.1', //实时打包使用的主机地址
+    	port:'8080' //实时打包的端口号
+    }
+    ```
+
+    
+
+  
+
+  
 
 
 
